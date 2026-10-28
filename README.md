@@ -12,3 +12,9 @@ Aprender React, TypeScript e Git construindo um projeto por etapas.
 - Organizar missões por status.
 - Filtrar por tecnologia.
 - Acompanhar meu progresso.
+
+## Primeira entrega
+
+- Criar o formulário de missões.
+- Exibir as missões cadastradas.
+- Salvar as missões no navegador.
