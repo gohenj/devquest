@@ -1,33 +1,29 @@
-import './App.css'
-
-type Mission = {
-  id: number
-  title: string
-  technology: string
-}
+import "./App.css";
+import { MissionCard } from "./components/MissionCard";
+import type { Mission } from "./types/mission";
 
 const missions: Mission[] = [
   {
     id: 1,
-    title: 'Criar meu primeiro componente',
-    technology: 'React',
+    title: "Criar meu primeiro componente",
+    technology: "React",
   },
   {
     id: 2,
-    title: 'Entender tipos e interfaces',
-    technology: 'TypeScript',
+    title: "Entender tipos e interfaces",
+    technology: "TypeScript",
   },
   {
     id: 3,
-    title: 'Abrir um Pull Request',
-    technology: 'Git',
+    title: "Abrir um Pull Request",
+    technology: "Git",
   },
   {
     id: 4,
-    title: 'Fazer o merge',
-    technology: 'Git',
+    title: "Fazer o merge",
+    technology: "Git",
   },
-]
+];
 
 function App() {
   return (
@@ -42,15 +38,12 @@ function App() {
 
         <ul className="mission-list">
           {missions.map((mission) => (
-            <li key={mission.id} className="mission-card">
-              <h3>{mission.title}</h3>
-              <span>{mission.technology}</span>
-            </li>
+            <MissionCard key={mission.id} mission={mission} />
           ))}
         </ul>
       </section>
     </main>
-  )
+  );
 }
 
-export default App
+export default App;
