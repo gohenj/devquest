@@ -31,13 +31,19 @@ function App() {
   const [missions, setMissions] = useState<Mission[]>(initialMissions);
   const [title, setTitle] = useState("");
   const [technology, setTechnology] = useState("");
+  const [error, setError] = useState("");
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const cleanTitle = title.trim();
     const cleanTechnology = technology.trim();
 
-    if (!cleanTitle || !cleanTechnology) return;
+    if (!cleanTitle || !cleanTechnology) {
+      setError("Preencha o nome da missão e a tecnologia com um texto válido.");
+      return;
+    }
+
+    setError("");
 
     setMissions((currentMissions) => {
       const nextId =
@@ -62,7 +68,7 @@ function App() {
         <h1>DevQuest</h1>
         <p>Sua próxima evolução começa com uma missão.</p>
       </header>
-      <form onSubmit={handleSubmit}>
+      <form className="mission-form" onSubmit={handleSubmit}>
         <div>
           <label htmlFor="mission-title">Nome da missão</label>
           <input
@@ -84,7 +90,11 @@ function App() {
             required
           />
         </div>
-
+        {error && (
+          <p className="form-error" role="alert">
+            {error}
+          </p>
+        )}
         <button type="submit">Adicionar missão</button>
       </form>
       <section aria-labelledby="missions-title">
