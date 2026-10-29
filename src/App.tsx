@@ -1,7 +1,7 @@
 import "./App.css";
 import { MissionCard } from "./components/MissionCard";
 import type { Mission } from "./types/mission";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 
 const initialMissions: Mission[] = [
@@ -27,11 +27,49 @@ const initialMissions: Mission[] = [
   },
 ];
 
+function loadMissions(): Mission[] {
+  try {
+    const saved = localStorage.getItem("devquest:missions");
+
+    if (saved === null) return initialMissions;
+
+    const data: unknown = JSON.parse(saved);
+
+    if (!Array.isArray(data)) return initialMissions;
+
+    const isValid = data.every(
+      (mission: unknown) =>
+        typeof mission === "object" &&
+        mission !== null &&
+        "id" in mission &&
+        typeof mission.id === "number" &&
+        Number.isFinite(mission.id) &&
+        "title" in mission &&
+        typeof mission.title === "string" &&
+        "technology" in mission &&
+        typeof mission.technology === "string",
+    );
+
+    if (!isValid) return initialMissions;
+
+    return data;
+  } catch {
+    return initialMissions;
+  }
+}
+
 function App() {
-  const [missions, setMissions] = useState<Mission[]>(initialMissions);
+  const [missions, setMissions] = useState<Mission[]>(loadMissions);
   const [title, setTitle] = useState("");
   const [technology, setTechnology] = useState("");
   const [error, setError] = useState("");
+  useEffect(() => {
+    try {
+      localStorage.setItem("devquest:missions", JSON.stringify(missions));
+    } catch {
+      console.error("Não foi possível salvar as missões neste navegador.");
+    }
+  }, [missions]);
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
