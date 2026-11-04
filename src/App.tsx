@@ -75,6 +75,23 @@ function App() {
   const [title, setTitle] = useState("");
   const [technology, setTechnology] = useState("");
   const [error, setError] = useState("");
+  const [search, setSearch] = useState("");
+  const [technologyFilter, setTechnologyFilter] = useState("");
+
+  const technologies = [
+    ...new Set(missions.map((mission) => mission.technology)),
+  ].sort((a, b) => a.localeCompare(b, "pt-BR"));
+
+  const filteredMissions = missions.filter((mission) => {
+    const matchesSearch = mission.title
+      .toLocaleLowerCase("pt-BR")
+      .includes(search.trim().toLocaleLowerCase("pt-BR"));
+
+    const matchesTechnology =
+      technologyFilter === "" || mission.technology === technologyFilter;
+
+    return matchesSearch && matchesTechnology;
+  });
 
   useEffect(() => {
     try {
@@ -166,15 +183,65 @@ function App() {
       <section aria-labelledby="missions-title">
         <h2 id="missions-title">Minhas missões</h2>
 
-        <ul className="mission-list">
-          {missions.map((mission) => (
-            <MissionCard
-              key={mission.id}
-              mission={mission}
-              onStatusChange={handleStatusChange}
+        <div className="mission-filters">
+          <div>
+            <label htmlFor="mission-search">Buscar missão</label>
+            <input
+              id="mission-search"
+              type="search"
+              placeholder="Digite o nome da missão"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
             />
-          ))}
-        </ul>
+          </div>
+
+          <div>
+            <label htmlFor="technology-filter">Filtrar por tecnologia</label>
+            <select
+              id="technology-filter"
+              value={technologyFilter}
+              onChange={(event) => setTechnologyFilter(event.target.value)}
+            >
+              <option value="">Todas as tecnologias</option>
+
+              {technologies.map((technology) => (
+                <option key={technology} value={technology}>
+                  {technology}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <p role="status">
+          {filteredMissions.length} de {missions.length} missões exibidas.
+        </p>
+
+        {filteredMissions.length > 0 ? (
+          <ul className="mission-list">
+            {filteredMissions.map((mission) => (
+              <MissionCard
+                key={mission.id}
+                mission={mission}
+                onStatusChange={handleStatusChange}
+              />
+            ))}
+          </ul>
+        ) : (
+          <div className="mission-empty">
+            <p>Nenhuma missão encontrada com esses filtros.</p>
+
+            <button
+              type="button"
+              onClick={() => {
+                setSearch("");
+                setTechnologyFilter("");
+              }}
+            >
+              Limpar filtros
+            </button>
+          </div>
+        )}
       </section>
     </main>
   );
