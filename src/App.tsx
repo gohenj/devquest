@@ -1,29 +1,33 @@
 import "./App.css";
-import { MissionCard } from "./components/MissionCard";
-import type { Mission } from "./types/mission";
 import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
+import { MissionCard } from "./components/MissionCard";
+import type { Mission, MissionStatus } from "./types/mission";
 
 const initialMissions: Mission[] = [
   {
     id: 1,
     title: "Criar meu primeiro componente",
     technology: "React",
+    status: "planned",
   },
   {
     id: 2,
     title: "Entender tipos e interfaces",
     technology: "TypeScript",
+    status: "planned",
   },
   {
     id: 3,
     title: "Abrir um Pull Request",
     technology: "Git",
+    status: "planned",
   },
   {
     id: 4,
     title: "Fazer o merge",
     technology: "Git",
+    status: "planned",
   },
 ];
 
@@ -52,7 +56,15 @@ function loadMissions(): Mission[] {
 
     if (!isValid) return initialMissions;
 
-    return data;
+    return data.map((mission) => ({
+      id: mission.id,
+      title: mission.title,
+      technology: mission.technology,
+      status:
+        mission.status === "studying" || mission.status === "completed"
+          ? mission.status
+          : "planned",
+    }));
   } catch {
     return initialMissions;
   }
@@ -63,6 +75,7 @@ function App() {
   const [title, setTitle] = useState("");
   const [technology, setTechnology] = useState("");
   const [error, setError] = useState("");
+
   useEffect(() => {
     try {
       localStorage.setItem("devquest:missions", JSON.stringify(missions));
@@ -70,6 +83,7 @@ function App() {
       console.error("Não foi possível salvar as missões neste navegador.");
     }
   }, [missions]);
+
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -93,6 +107,7 @@ function App() {
           id: nextId,
           title: cleanTitle,
           technology: cleanTechnology,
+          status: "planned",
         },
       ];
     });
@@ -100,12 +115,22 @@ function App() {
     setTitle("");
     setTechnology("");
   }
+
+  function handleStatusChange(id: number, status: MissionStatus) {
+    setMissions((currentMissions) =>
+      currentMissions.map((mission) =>
+        mission.id === id ? { ...mission, status } : mission,
+      ),
+    );
+  }
+
   return (
     <main className="devquest">
       <header>
         <h1>DevQuest</h1>
         <p>Sua próxima evolução começa com uma missão.</p>
       </header>
+
       <form className="mission-form" onSubmit={handleSubmit}>
         <div>
           <label htmlFor="mission-title">Nome da missão</label>
@@ -128,19 +153,26 @@ function App() {
             required
           />
         </div>
+
         {error && (
           <p className="form-error" role="alert">
             {error}
           </p>
         )}
+
         <button type="submit">Adicionar missão</button>
       </form>
+
       <section aria-labelledby="missions-title">
         <h2 id="missions-title">Minhas missões</h2>
 
         <ul className="mission-list">
           {missions.map((mission) => (
-            <MissionCard key={mission.id} mission={mission} />
+            <MissionCard
+              key={mission.id}
+              mission={mission}
+              onStatusChange={handleStatusChange}
+            />
           ))}
         </ul>
       </section>
