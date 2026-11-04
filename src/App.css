@@ -150,3 +150,91 @@
   outline: 3px solid #b99aff;
   outline-offset: 3px;
 }
+
+.mission-progress {
+  margin: 32px 0;
+  padding: 24px;
+  background: #1b1926;
+  border: 1px solid #383047;
+  border-radius: 12px;
+}
+
+.mission-progress h2 {
+  margin-top: 0;
+}
+
+.progress-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.progress-stats > div {
+  display: grid;
+  gap: 8px;
+}
+
+.progress-stats strong {
+  color: #b99aff;
+  font-size: 32px;
+}
+
+.progress-stats span,
+.mission-progress p {
+  color: #b5aec4;
+}
+
+.mission-progress label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.mission-progress progress {
+  display: block;
+  width: 100%;
+  height: 16px;
+  appearance: none;
+  border: 0;
+  border-radius: 999px;
+  overflow: hidden;
+  background: #302443;
+}
+
+.mission-progress progress::-webkit-progress-bar {
+  background: #302443;
+}
+
+.mission-progress progress::-webkit-progress-value {
+  background: #b99aff;
+}
+
+.mission-progress progress::-moz-progress-bar {
+  background: #b99aff;
+}
+
+.mission-card label {
+  display: block;
+  margin: 20px 0 8px;
+  color: #b5aec4;
+  font-size: 14px;
+}
+
+.mission-card select {
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  color: #f1edf7;
+  background-color: #101018;
+  border: 1px solid #655475;
+  border-radius: 8px;
+  font: inherit;
+  color-scheme: dark;
+  cursor: pointer;
+}
+
+.mission-card select:focus-visible {
+  outline: 3px solid #b99aff;
+  outline-offset: 3px;
+}

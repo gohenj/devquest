@@ -92,7 +92,24 @@ function App() {
 
     return matchesSearch && matchesTechnology;
   });
+  const totalMissions = missions.length;
 
+  const completedMissions = missions.filter(
+    (mission) => mission.status === "completed",
+  ).length;
+
+  const studyingMissions = missions.filter(
+    (mission) => mission.status === "studying",
+  ).length;
+
+  const plannedMissions = missions.filter(
+    (mission) => mission.status === "planned",
+  ).length;
+
+  const progressPercentage =
+    totalMissions === 0
+      ? 0
+      : Math.round((completedMissions / totalMissions) * 100);
   useEffect(() => {
     try {
       localStorage.setItem("devquest:missions", JSON.stringify(missions));
@@ -147,7 +164,47 @@ function App() {
         <h1>DevQuest</h1>
         <p>Sua próxima evolução começa com uma missão.</p>
       </header>
+      <section className="mission-progress" aria-labelledby="progress-title">
+        <h2 id="progress-title">Sua evolução</h2>
 
+        <div className="progress-stats">
+          <div>
+            <strong>{totalMissions}</strong>
+            <span>Total de missões</span>
+          </div>
+
+          <div>
+            <strong>{plannedMissions}</strong>
+            <span>Vou estudar</span>
+          </div>
+
+          <div>
+            <strong>{studyingMissions}</strong>
+            <span>Estudando</span>
+          </div>
+
+          <div>
+            <strong>{completedMissions}</strong>
+            <span>Concluídas</span>
+          </div>
+        </div>
+
+        <label htmlFor="mission-progress-bar">
+          {progressPercentage}% concluído
+        </label>
+
+        <progress
+          id="mission-progress-bar"
+          max={100}
+          value={progressPercentage}
+        >
+          {progressPercentage}%
+        </progress>
+
+        <p>
+          {completedMissions} de {totalMissions} missões concluídas.
+        </p>
+      </section>
       <form className="mission-form" onSubmit={handleSubmit}>
         <div>
           <label htmlFor="mission-title">Nome da missão</label>
