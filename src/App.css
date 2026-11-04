@@ -102,3 +102,51 @@
 .mission-form button:hover {
   background: #cbb3ff;
 }
+
+.mission-filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.mission-filters > div {
+  display: grid;
+  gap: 8px;
+}
+
+.mission-filters input,
+.mission-filters select {
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  color: #f1edf7;
+  background: #101018;
+  border: 1px solid #655475;
+  border-radius: 8px;
+}
+
+.mission-empty {
+  padding: 24px;
+  text-align: center;
+  background: #1b1926;
+  border: 1px dashed #655475;
+  border-radius: 12px;
+}
+
+.mission-empty button {
+  padding: 10px 16px;
+  color: #171020;
+  background: #b99aff;
+  border: 0;
+  border-radius: 8px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.mission-filters input:focus-visible,
+.mission-filters select:focus-visible,
+.mission-empty button:focus-visible {
+  outline: 3px solid #b99aff;
+  outline-offset: 3px;
+}
